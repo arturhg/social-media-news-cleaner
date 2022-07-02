@@ -1,7 +1,8 @@
 // ==UserScript==
 // @name         social-media-news-cleaner
-// @namespace    http://tampermonkey.net/
-// @version      1.0
+// @license      MIT
+// @namespace    https://greasyfork.org/en/users/931475
+// @version      1.0.0
 // @description  Cleans the news sites from the social media posts (for now, only cleans mamul.am from facebook and telegram posts)
 // @author       https://github.com/arturhg/
 // @match        https://mamul.am/*
