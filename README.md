@@ -1,4 +1,5 @@
 # social-media-news-cleaner
+https://greasyfork.org/en/scripts/447363-social-media-news-cleaner  
 ![Greasy Fork](https://img.shields.io/greasyfork/v/447363?style=for-the-badge)
 ![Greasy Fork](https://img.shields.io/greasyfork/dt/447363?style=for-the-badge)
 ![Greasy Fork](https://img.shields.io/greasyfork/l/447363?style=for-the-badge)
