@@ -7,4 +7,4 @@ https://greasyfork.org/en/scripts/447363-social-media-news-cleaner
 ![Lines of code](https://img.shields.io/tokei/lines/github.com/arturhg/social-media-news-cleaner?style=for-the-badge)  
 Userscript for Greasemonkey/Tampermonkey/Violentmonkey.
 Cleans the news sites from the social media posts.
-For now, only cleans mamul.am from facebook and telegram posts.
+For now, only cleans mamul.am from facebook and telegram posts and news.am (without subdomains) from facebook posts.
