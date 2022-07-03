@@ -6,12 +6,13 @@
 // @description  Cleans the news sites from the social media posts (for now, only cleans mamul.am from facebook and telegram posts)
 // @author       https://github.com/arturhg/
 // @match        https://mamul.am/*
+// @match        https://news.am/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mamul.am
 // @grant        none
 // @noframes
 // ==/UserScript==
 
-async function containsSocialMediaSource(url) {
+async function containsSocialMediaSourceMamulAm(url) {
 
     if (!(url.includes('news/') && !url.includes('sdk'))) {
         return Promise.resolve(false);
@@ -41,6 +42,44 @@ async function containsSocialMediaSource(url) {
         });
 }
 
+async function containsSocialMediaSourceNewsAm(url) {
+
+    if (url.includes('style.news.am') || url.includes('sport.news.am') || url.includes('med.news.am')) {
+        return Promise.resolve(false);
+    }
+
+    const entry = getWithTtl(url);
+    if (entry != null) {
+        return Promise.resolve(entry === true);
+    }
+
+    return fetch(url)
+        .then(x => x.text())
+        .then(function (html) {
+
+            const doc = new DOMParser()
+                .parseFromString(html, "text/html");
+
+            const facebookIframes = [...doc.querySelectorAll('iframe')]
+                .filter(fe => fe.src.includes('facebook.com'));
+
+            if (facebookIframes.length === 0) {
+
+                const facebookMentions = [...doc.querySelectorAll('div.article-text > span.article-body > p')]
+                    .filter(p => p.innerHTML.includes('ֆեյսբուքյան էջում գրել է'));
+
+                if (facebookMentions.length === 0) {
+                    setWithTtlInDays(url, false, 1);
+                    return false;
+                }
+
+            }
+
+            setWithTtlInDays(url, true, 1);
+            return true;
+        });
+}
+
 Array.prototype.asyncFilter = async function (f) {
     const array = this;
     const booleans = await Promise.all(array.map(f));
@@ -48,7 +87,7 @@ Array.prototype.asyncFilter = async function (f) {
 }
 
 
-function getNodesToRemove(newsLink) {
+function getNodesToRemoveOnMamulAm(newsLink) {
 
     const link = newsLink?.parentNode;
     const date = link?.previousSibling;
@@ -118,9 +157,19 @@ function garbageCollect() {
 
     setInterval(garbageCollect, 1000 * 60 * 60);
 
-    [...document.querySelectorAll('div > a')]
-        .asyncFilter(a => containsSocialMediaSource(a.href))
-        .then(links => links.flatMap(link => getNodesToRemove(link))
-            .filter(node => node !== null && node !== undefined)
-            .forEach(node => node.remove()));
+    const onMamulAm = window.location.href.includes('mamul.am');
+
+    if (onMamulAm) {
+        [...document.querySelectorAll('div > a')]
+            .asyncFilter(a => containsSocialMediaSourceMamulAm(a.href))
+            .then(links => links.flatMap(link => getNodesToRemoveOnMamulAm(link))
+                .filter(node => node !== null && node !== undefined)
+                .forEach(node => node.remove()));
+    } else {
+        [...document.querySelectorAll('a.news-item')]
+            .asyncFilter(a => containsSocialMediaSourceNewsAm(a.href))
+            .then(nodes => nodes.forEach(node => node.remove()));
+
+    }
+
 })();
