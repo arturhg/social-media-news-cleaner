@@ -7,7 +7,7 @@
 Userscript for Greasemonkey/Tampermonkey/Violentmonkey.  
 Cleans the news sites from the social media posts.
 
-__Install (GreasyFork):__ https://greasyfork.org/en/scripts/447363-social-media-news-cleaner
+__Install (GreasyFork):__ https://greasyfork.org/en/scripts/447363-social-media-news-cleaner  
 __Install (Github raw):__ https://github.com/arturhg/social-media-news-cleaner/blob/master/social-media-news-cleaner.user.js
 
 ### Supported sites
