@@ -2,7 +2,7 @@
 // @name         social-media-news-cleaner
 // @license      MIT
 // @namespace    https://greasyfork.org/en/users/931475
-// @version      1.1.3
+// @version      1.1.4
 // @description  Cleans the news sites from the social media posts (for now, only cleans mamul.am from facebook and telegram posts and news.am (without subdomains) from facebook posts)
 // @author       https://github.com/arturhg/
 // @match        https://mamul.am/*
@@ -34,6 +34,14 @@ async function containsSocialMediaSourceMamulAm(url) {
                 .filter(fe => fe.src.includes('facebook.com'));
 
             if (facebookIframes.length !== 0) {
+                setWithTtlInDays(url, true, 1);
+                return true;
+            }
+
+            const facebookMentions = [...doc.querySelectorAll('.descer2 > p:nth-child(2)')]
+                .filter(p => p.textContent.includes('ֆեյսբուքյան իր էջում') || p.textContent.includes('«Թելեգրամ»-ի իր էջում'));
+
+            if (facebookMentions.length !== 0) {
                 setWithTtlInDays(url, true, 1);
                 return true;
             }
